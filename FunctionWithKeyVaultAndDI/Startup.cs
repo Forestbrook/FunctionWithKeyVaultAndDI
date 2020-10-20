@@ -1,6 +1,7 @@
 ﻿using Azure.Identity;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 
@@ -13,6 +14,7 @@ namespace Forestbrook.FunctionWithKeyVaultAndDI
 
         public override void Configure(IFunctionsHostBuilder builder)
         {
+            builder.Services.AddSingleton(s => new DemoService(_configuration["DbCredentials:UserId"], _configuration["TestSecret"]));
         }
 
         public override void ConfigureAppConfiguration(IFunctionsConfigurationBuilder fnConfigBuilder)

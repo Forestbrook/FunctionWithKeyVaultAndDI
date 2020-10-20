@@ -6,15 +6,22 @@ namespace Forestbrook.FunctionWithKeyVaultAndDI
 {
     public class Function1
     {
-        public Function1()
-        {
+        private readonly DemoService _demoService;
 
+        public Function1(DemoService demoService)
+        {
+            _demoService = demoService ?? throw new ArgumentNullException(nameof(demoService));
         }
 
         [FunctionName("Function1")]
         public void Run([TimerTrigger("0 */5 * * * *")]TimerInfo myTimer, ILogger log)
         {
-            log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
+            log.LogInformation(
+                @$"-----------------------------------------------
+C# Timer trigger function executed at: {DateTime.Now}
+UserId: {_demoService.UserId}
+TestSecret: {_demoService.TestSecret}
+-----------------------------------------------");
         }
     }
 }
