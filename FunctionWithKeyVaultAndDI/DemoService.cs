@@ -1,15 +1,20 @@
-﻿namespace Forestbrook.FunctionWithKeyVaultAndDI
+﻿using Microsoft.Extensions.Configuration;
+using System;
+
+namespace Forestbrook.FunctionWithKeyVaultAndDI;
+
+public class DemoService
 {
-    public class DemoService
+    public DemoService(IConfiguration configuration)
     {
-        public DemoService(string userId, string testSecret)
-        {
-            UserId = userId;
-            TestSecret = testSecret;
-        }
+        if (configuration == null) throw new ArgumentNullException(nameof(configuration));
 
-        public string TestSecret { get; }
-
-        public string UserId { get; }
+        // Get test secrets from the KeyVault:
+        UserId = configuration[ConfigurationKeys.DatabaseUserId];
+        TestSecret = configuration["TestSecret"];
     }
+
+    public string TestSecret { get; }
+
+    public string UserId { get; }
 }
