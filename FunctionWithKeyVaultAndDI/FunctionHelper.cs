@@ -9,6 +9,13 @@ namespace Forestbrook.FunctionWithKeyVaultAndDI;
 
 public static class FunctionHelper
 {
+    public static IConfigurationBuilder AddAppSettingsJson(this IConfigurationBuilder builder, FunctionsHostBuilderContext context)
+    {
+        builder.AddJsonFile(Path.Combine(context.ApplicationRootPath, "appsettings.json"), optional: true, reloadOnChange: false);
+        builder.AddJsonFile(Path.Combine(context.ApplicationRootPath, $"appsettings.{context.EnvironmentName}.json"), optional: true, reloadOnChange: false);
+        return builder;
+    }
+
     public static IConfigurationBuilder AddAzureKeyVault(this IConfigurationBuilder builder)
         => builder.AddAzureKeyVault(builder.Build());
 
@@ -20,13 +27,6 @@ public static class FunctionHelper
         var keyVaultUri = configuration.CreateKeyVaultUri();
         var keyVaultCredential = configuration.CreateKeyVaultCredential();
         builder.AddAzureKeyVault(keyVaultUri, keyVaultCredential);
-        return builder;
-    }
-
-    public static IConfigurationBuilder AddAppSettingsJson(this IConfigurationBuilder builder, FunctionsHostBuilderContext context)
-    {
-        builder.AddJsonFile(Path.Combine(context.ApplicationRootPath, "appsettings.json"), optional: true, reloadOnChange: false);
-        builder.AddJsonFile(Path.Combine(context.ApplicationRootPath, $"appsettings.{context.EnvironmentName}.json"), optional: true, reloadOnChange: false);
         return builder;
     }
 
