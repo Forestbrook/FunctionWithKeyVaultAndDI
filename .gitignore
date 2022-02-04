@@ -5,6 +5,10 @@
 # For now included to make sure GitHub example is working as expected
 # local.settings.json
 
+# Publishing profiles
+PublishProfiles/
+serviceDependencies.ForestbrookFunctionAppDemo*.json
+
 # User-specific files
 *.suo
 *.user

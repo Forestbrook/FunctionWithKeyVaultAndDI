@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Text;
@@ -14,10 +15,12 @@ public class IsAliveFunction
     // Test local: http://localhost:7071/api/IsAliveFunction
     // Test on Azure: https://TODO-your-function-name-.azurewebsites.net/api/IsAliveFunction
     private const string IsRunningMessage = "Forestbrook Function is running. Version:";
+    private readonly IConfiguration _configuration;
     private readonly IHostEnvironment _hostEnvironment;
 
-    public IsAliveFunction(IHostEnvironment hostEnvironment)
+    public IsAliveFunction(IConfiguration configuration, IHostEnvironment hostEnvironment)
     {
+        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         _hostEnvironment = hostEnvironment ?? throw new ArgumentNullException(nameof(hostEnvironment));
     }
 
@@ -35,6 +38,11 @@ public class IsAliveFunction
         sb.Append($"IsProduction: {_hostEnvironment.IsProduction()}<br/>");
         sb.Append($"ApplicationName = {_hostEnvironment.ApplicationName}<br/>");
         sb.Append($"ContentRootPath = {_hostEnvironment.ContentRootPath}<br/>");
+        sb.Append("<br/>");
+        sb.Append($"TestSetting1 = {_configuration["TestSetting1"]}<br/>");
+        sb.Append($"TestSetting2 = {_configuration["TestSetting2"]}<br/>");
+        sb.Append($"TestSetting3 = {_configuration["TestSetting3"]}<br/>");
+        sb.Append($"TestSetting4 = {_configuration["TestSetting4"]}<br/>");
         sb.Append("<br/>");
         if (req.Query.Count > 0)
         {
