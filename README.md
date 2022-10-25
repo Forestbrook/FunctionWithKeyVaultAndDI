@@ -4,7 +4,7 @@
 
 See [Knowledge Base article](https://www.forestbrook.net/docs/azure/functionwithkeyvaultanddi.html) for detailed description.
 
-Function with DI and KeyVault - Forestbrook.net Knowledge Base     Function with DI and KeyVault | Forestbrook.net Knowledge Base            {"@context":"https://schema.org","@type":"WebPage","description":"The Forestbrook.net Knowledge Base by Marcel Wolterbeek","headline":"Function with DI and KeyVault","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://www.forestbrook.net/assets/images/fblogo.png"}},"url":"https://www.forestbrook.net/docs/azure/functionwithkeyvaultanddi.html"} Link Search Menu Expand Document
+### Function with DI and KeyVault 
 
 *   [Home](https://www.forestbrook.net/)
 *   [](#)[ASP.NET Core](https://www.forestbrook.net/docs/asp-net-core.html)
