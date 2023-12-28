@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "FunctionWithKeyVaultAndDI": {
+      "environmentVariables": {
+        "AZURE_FUNCTIONS_ENVIRONMENT": "Development"
+      },
+      "commandName": "Project",
+      "commandLineArgs": "--port 7150",
+      "launchBrowser": false
+    }
+  }
+}
