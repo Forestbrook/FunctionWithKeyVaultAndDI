@@ -60,7 +60,7 @@ public class IsAliveFunction
         // Show we're alive:
         var response = req.CreateResponse(HttpStatusCode.OK);
         response.Headers.Add("Content-Type", "text/html; charset=utf-8");
-        response.WriteString(sb.ToString());
+        await response.WriteStringAsync(sb.ToString());
         return response;
     }
 }

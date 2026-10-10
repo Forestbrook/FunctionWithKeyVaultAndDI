@@ -1,3 +1,4 @@
+using Microsoft.Azure.Functions.Worker.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,22 +10,23 @@ internal class Program
 {
     static async Task Main(string[] args)
     {
-        var host = new HostBuilder()
-            .ConfigureFunctionsWorkerDefaults()
-            .ConfigureAppConfiguration(ConfigureAppConfiguration)
-            .ConfigureServices(Configure)
-            .Build();
+        var builder = FunctionsApplication.CreateBuilder(args)
+            .ConfigureFunctionsWebApplication();
 
-        await host.RunAsync();
+        ConfigureHostConfiguration(builder.Configuration, builder.Environment);
+        ConfigureServices(builder);
+        await builder.Build().RunAsync();
     }
 
-    private static void Configure(HostBuilderContext context, IServiceCollection services)
+    private static void ConfigureServices(IHostApplicationBuilder builder)
     {
+        var services = builder.Services;
+        
         // Configure your services here:
         services.AddSingleton<DemoService>();
     }
 
-    private static void ConfigureAppConfiguration(HostBuilderContext hostingContext, IConfigurationBuilder appConfigBuilder)
+    private static void ConfigureHostConfiguration(IConfigurationBuilder appConfigBuilder, IHostEnvironment hostEnvironment)
     {
         // When running/debugging locally, local.settings.json is automatically loaded
         // Environment defaults to Development
@@ -37,9 +39,14 @@ internal class Program
         // See also: Manage your function app: https://learn.microsoft.com/en-us/azure/azure-functions/functions-how-to-use-azure-function-app-settings
         // All possible settings see App settings reference for Azure Functions: https://learn.microsoft.com/en-us/azure/azure-functions/functions-app-settings
 
-        appConfigBuilder.AddAppSettingsJson(hostingContext);
+        appConfigBuilder.AddAppSettingsJson(hostEnvironment);
         appConfigBuilder.AddEnvironmentVariables();
         appConfigBuilder.AddUserSecrets<Program>(optional: true);
+        // NOTE: You can use the default AzureCredentialSelection when debugging, but in Visual Studio it might take too long to authenticate, so you can use the VisualStudio credential selection when debugging locally.
+#if DEBUG
+        appConfigBuilder.AddAzureKeyVault(AzureCredentialSelection.VisualStudio);
+#else
         appConfigBuilder.AddAzureKeyVault();
+#endif
     }
 }
